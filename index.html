@@ -10,6 +10,8 @@
             --card-bg: #1e293b;
             --text-color: #f8fafc;
             --accent-color: #38bdf8;
+            --qwen-color: #7c3aed;
+            --chat-bubble-bg: #0f172a;
         }
 
         body {
@@ -36,11 +38,11 @@
             animation: fadeIn 0.8s ease-out;
             display: flex;
             flex-direction: column;
-            gap: 5px;
         }
 
         h1 {
             font-size: 1.8rem;
+            margin-top: 0;
             margin-bottom: 20px;
             color: var(--accent-color);
         }
@@ -67,6 +69,7 @@
             font-size: 1rem;
             box-sizing: border-box;
             transition: all 0.3s ease;
+            -webkit-appearance: none;
         }
 
         input:focus {
@@ -77,7 +80,7 @@
 
         .btn-calc {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             border: none;
             border-radius: 12px;
             background: linear-gradient(135deg, #38bdf8, #3b82f6);
@@ -87,6 +90,8 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
+            display: block;
+            -webkit-appearance: none;
         }
 
         .btn-calc:hover {
@@ -101,6 +106,7 @@
             width: 250px;
             height: 125px;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .gauge {
@@ -116,11 +122,11 @@
             border-radius: 50%;
             background: conic-gradient(
                 from 270deg,
-                #ef4444 0% 18%,   /* Красный */
-                #f97316 18% 36%,  /* Оранжевый */
-                #eab308 36% 54%,  /* Желтый */
-                #84cc16 54% 72%,  /* Желто-зеленый */
-                #22c55e 72% 90%,  /* Зеленый */
+                #ef4444 0% 18%,
+                #f97316 18% 36%,
+                #eab308 36% 54%,
+                #84cc16 54% 72%,
+                #22c55e 72% 90%,
                 transparent 90% 100%
             );
             mask: radial-gradient(circle, transparent 65%, black 66%);
@@ -167,12 +173,33 @@
             min-height: 25px;
         }
 
-        /* Блок ИИ рекомендаций */
+        .btn-ai-trigger {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .btn-ai-trigger:hover {
+            box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* Блок ручной отправки */
         .ai-box {
             background-color: #0f172a;
             border: 1px solid #334155;
             border-radius: 16px;
-            padding: 15px;
+            padding: 20px;
             text-align: left;
             margin-top: 15px;
             display: none;
@@ -180,24 +207,100 @@
         }
 
         .ai-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #a78bfa;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .ai-content {
+        /* Окошко как в чате (Дизайн пузыря сообщения) */
+        .chat-container {
+            position: relative;
+            background-color: var(--chat-bubble-bg);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .chat-text {
             font-size: 0.9rem;
             color: #cbd5e1;
             line-height: 1.5;
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            padding-right: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+            text-align: left;
         }
 
-        .loading-dots::after {
-            content: ' .';
-            animation: dots 1s steps(5, end) infinite;
+        /* Кнопка скопировать внутри окошка чата */
+        .btn-copy {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy:hover {
+            background-color: #334155;
+            color: #fff;
+        }
+
+        .btn-copy.copied {
+            background-color: #16a34a;
+            border-color: #15803d;
+            color: white;
+        }
+
+        .btn-qwen {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--qwen-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+            transition: background 0.2s;
+        }
+
+        .btn-qwen:hover {
+            background-color: #6d28d9;
+        }
+
+        .instruction-list {
+            margin-top: 15px;
+            padding-left: 20px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .instruction-list li {
+            margin-bottom: 6px;
         }
 
         /* Кнопка поддержки */
@@ -206,7 +309,7 @@
             background: none;
             border: 1px dashed #475569;
             color: #94a3b8;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.85rem;
@@ -222,27 +325,18 @@
             background-color: rgba(56, 189, 248, 0.05);
         }
 
-        /* Анимации */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes scorePop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); color: var(--accent-color); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60% { content: '...'; }
-            80%, 100% { content: ''; }
         }
 
         .pop-animation {
             animation: scorePop 0.5s ease-out;
+        }
+        @keyframes scorePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); color: var(--accent-color); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -264,71 +358,4 @@
     <div class="input-group">
         <label for="weight">Вес (кг)</label>
         <input type="number" id="weight" placeholder="Например: 70" min="10" max="300">
-    </div>
-    
-    <button class="btn-calc" onclick="calculateScore()">Рассчитать оценку</button>
-
-    <div class="gauge-wrapper">
-        <div class="gauge">
-            <div class="gauge-body"></div>
-            <div class="gauge-arrow" id="arrow"></div>
-            <div class="gauge-center"></div>
-        </div>
-    </div>
-
-    <div class="result-text" id="scoreDisplay">0</div>
-    <div class="verdict" id="verdictDisplay">Введите данные</div>
-
-    <!-- Блок ИИ -->
-    <div class="ai-box" id="aiBox">
-        <div class="ai-title">🤖 Твой ИИ-Друг говорит:</div>
-        <div class="ai-content" id="aiContent">Обдумываю ответ для друга...</div>
-    </div>
-
-    <!-- Кнопка поддержки -->
-    <a href="mailto:gitmoderate@gmail.com" class="btn-support">💬 Поддержка: gitmoderate@gmail.com</a>
-</div>
-
-<script>
-    function calculateScore() {
-        const age = parseFloat(document.getElementById('age').value);
-        const height = parseFloat(document.getElementById('height').value);
-        const weight = parseFloat(document.getElementById('weight').value);
-
-        if (!age || !height || !weight) {
-            alert('Дружище, заполни все поля, чтобы я мог посчитать!');
-            return;
-        }
-
-        const heightInMeters = height / 100;
-        const bmi = weight / (heightInMeters * heightInMeters);
-
-        let idealBmi = 22;
-        if (age < 20) idealBmi = 21;
-        if (age > 50) idealBmi = 24;
-
-        const diff = Math.abs(bmi - idealBmi);
-        
-        let score = 100 - (diff * 8); 
-        score = Math.max(0, Math.min(100, Math.round(score)));
-
-        // Дружелюбные вердикты для шкалы
-        let textVerdict = "";
-        if (score >= 80) textVerdict = "Ты в идеальной форме! Зеленая зона 🌟";
-        else if (score >= 60) textVerdict = "Отличный результат, всё супер! Желто-зеленая зона 👍";
-        else if (score >= 40) textVerdict = "Нормально, но можно чуть лучше. Желтая зона ⚖️";
-        else if (score >= 20) textVerdict = "Обрати внимание на баланс. Оранжевая зона 🏃‍♂️";
-        else textVerdict = "Береги себя, нужно поработать над формой! Красная зона ❤️";
-
-        const degrees = -90 + (score * 1.8);
-        document.getElementById('arrow').style.transform = `translateX(-50%) rotate(${degrees}deg)`;
-
-        const scoreDisplay = document.getElementById('scoreDisplay');
-        const verdictDisplay = document.getElementById('verdictDisplay');
-        
-        scoreDisplay.classList.remove('pop-animation');
-        void scoreDisplay.offsetWidth; 
-        scoreDisplay.classList.add('pop-animation');
-
-        let currentCount = 0;
         
