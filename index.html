@@ -99,7 +99,7 @@
             box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
         }
 
-        /* Спидометр на 5 секторов */
+        /* Спидометр строго на 5 секторов */
         .gauge-wrapper {
             margin: 30px auto 15px;
             position: relative;
@@ -122,11 +122,11 @@
             border-radius: 50%;
             background: conic-gradient(
                 from 270deg,
-                #ef4444 0% 18%,
-                #f97316 18% 36%,
-                #eab308 36% 54%,
-                #84cc16 54% 72%,
-                #22c55e 72% 90%,
+                #ef4444 0% 18%,   /* Красный */
+                #f97316 18% 36%,  /* Оранжевый */
+                #eab308 36% 54%,  /* Желтый */
+                #84cc16 54% 72%,  /* Желто-зеленый */
+                #22c55e 72% 90%,  /* Зеленый */
                 transparent 90% 100%
             );
             mask: radial-gradient(circle, transparent 65%, black 66%);
@@ -187,6 +187,7 @@
             margin-top: 5px;
             display: none;
             animation: fadeIn 0.5s ease-out;
+            -webkit-appearance: none;
         }
 
         .btn-ai-trigger:hover {
@@ -194,7 +195,7 @@
             transform: scale(1.02);
         }
 
-        /* Блок ручной отправки */
+        /* Блок отправки в ИИ */
         .ai-box {
             background-color: #0f172a;
             border: 1px solid #334155;
@@ -216,7 +217,7 @@
             gap: 6px;
         }
 
-        /* Окошко как в чате (Дизайн пузыря сообщения) */
+        /* Окошко в виде облачка чата */
         .chat-container {
             position: relative;
             background-color: var(--chat-bubble-bg);
@@ -235,12 +236,11 @@
             white-space: pre-wrap;
             word-break: break-word;
             padding-right: 5px;
-            max-height: 120px;
+            max-height: 140px;
             overflow-y: auto;
             text-align: left;
         }
 
-        /* Кнопка скопировать внутри окошка чата */
         .btn-copy {
             display: flex;
             align-items: center;
@@ -257,6 +257,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
+            -webkit-appearance: none;
         }
 
         .btn-copy:hover {
@@ -285,6 +286,7 @@
             text-align: center;
             box-sizing: border-box;
             transition: background 0.2s;
+            -webkit-appearance: none;
         }
 
         .btn-qwen:hover {
@@ -356,6 +358,4 @@
     </div>
     
     <div class="input-group">
-        <label for="weight">Вес (кг)</label>
-        <input type="number" id="weight" placeholder="Например: 70" min="10" max="300">
         
