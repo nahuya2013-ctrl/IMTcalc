@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор Идеальности</title>
+    <title>Дружеский Калькулятор Параметров</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -31,25 +31,28 @@
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             text-align: center;
             animation: fadeIn 0.8s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         h1 {
             font-size: 1.8rem;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: var(--accent-color);
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: left;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-size: 0.9rem;
             color: #94a3b8;
         }
@@ -72,7 +75,7 @@
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
         }
 
-        button {
+        .btn-calc {
             width: 100%;
             padding: 14px;
             border: none;
@@ -86,18 +89,14 @@
             margin-top: 10px;
         }
 
-        button:hover {
+        .btn-calc:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        /* Спидометр */
+        /* Спидометр на 5 секторов */
         .gauge-wrapper {
-            margin: 40px auto 20px;
+            margin: 30px auto 15px;
             position: relative;
             width: 250px;
             height: 125px;
@@ -111,18 +110,17 @@
             position: relative;
         }
 
-        /* 5 цветных секторов в один конический градиент */
         .gauge-body {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             background: conic-gradient(
                 from 270deg,
-                #ef4444 0% 18%,   /* Красный (0-20) */
-                #f97316 18% 36%,  /* Оранжевый (20-40) */
-                #eab308 36% 54%,  /* Желтый (40-60) */
-                #22c55e 54% 72%,  /* Зеленый (60-80) */
-                #3b82f6 72% 90%,  /* Синий (80-100) */
+                #ef4444 0% 18%,   /* Красный */
+                #f97316 18% 36%,  /* Оранжевый */
+                #eab308 36% 54%,  /* Желтый */
+                #84cc16 54% 72%,  /* Желто-зеленый */
+                #22c55e 72% 90%,  /* Зеленый */
                 transparent 90% 100%
             );
             mask: radial-gradient(circle, transparent 65%, black 66%);
@@ -156,30 +154,91 @@
         }
 
         .result-text {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-top: 10px;
-            min-height: 40px;
-            animation: pulse 2s infinite;
+            margin-top: 5px;
+            min-height: 45px;
         }
 
         .verdict {
             font-size: 1.1rem;
             color: #94a3b8;
-            margin-top: 5px;
+            margin-bottom: 20px;
             min-height: 25px;
+        }
+
+        /* Блок ИИ рекомендаций */
+        .ai-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: left;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .ai-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #a78bfa;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ai-content {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .loading-dots::after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+
+        /* Кнопка поддержки */
+        .btn-support {
+            margin-top: 25px;
+            background: none;
+            border: 1px dashed #475569;
+            color: #94a3b8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            align-self: center;
+        }
+
+        .btn-support:hover {
+            border-color: var(--accent-color);
+            color: #fff;
+            background-color: rgba(56, 189, 248, 0.05);
         }
 
         /* Анимации */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes scorePop {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); color: var(--accent-color); }
+            50% { transform: scale(1.15); color: var(--accent-color); }
             100% { transform: scale(1); }
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
         }
 
         .pop-animation {
@@ -207,7 +266,7 @@
         <input type="number" id="weight" placeholder="Например: 70" min="10" max="300">
     </div>
     
-    <button onclick="calculateScore()">Рассчитать оценку</button>
+    <button class="btn-calc" onclick="calculateScore()">Рассчитать оценку</button>
 
     <div class="gauge-wrapper">
         <div class="gauge">
@@ -219,6 +278,15 @@
 
     <div class="result-text" id="scoreDisplay">0</div>
     <div class="verdict" id="verdictDisplay">Введите данные</div>
+
+    <!-- Блок ИИ -->
+    <div class="ai-box" id="aiBox">
+        <div class="ai-title">🤖 Твой ИИ-Друг говорит:</div>
+        <div class="ai-content" id="aiContent">Обдумываю ответ для друга...</div>
+    </div>
+
+    <!-- Кнопка поддержки -->
+    <a href="mailto:gitmoderate@gmail.com" class="btn-support">💬 Поддержка: gitmoderate@gmail.com</a>
 </div>
 
 <script>
@@ -228,67 +296,39 @@
         const weight = parseFloat(document.getElementById('weight').value);
 
         if (!age || !height || !weight) {
-            alert('Пожалуйста, заполните все поля корректно.');
+            alert('Дружище, заполни все поля, чтобы я мог посчитать!');
             return;
         }
 
-        // Логика расчета ИМТ (Индекс массы тела)
         const heightInMeters = height / 100;
         const bmi = weight / (heightInMeters * heightInMeters);
 
-        // Расчет идеального ИМТ с легкой поправкой на возраст
         let idealBmi = 22;
         if (age < 20) idealBmi = 21;
         if (age > 50) idealBmi = 24;
 
-        // Отклонение от идеала
         const diff = Math.abs(bmi - idealBmi);
         
-        // Перевод отклонения в шкалу 0-100 (где 100 — идеальное совпадение)
         let score = 100 - (diff * 8); 
-        score = Math.max(0, Math.min(100, Math.round(score))); // Ограничиваем рамками 0-100
+        score = Math.max(0, Math.min(100, Math.round(score)));
 
-        // Вердикты и управление анимацией стрелки
+        // Дружелюбные вердикты для шкалы
         let textVerdict = "";
-        if (score >= 80) textVerdict = "Отличные параметры! 🎉";
-        else if (score >= 60) textVerdict = "Хорошая норма 👍";
-        else if (score >= 40) textVerdict = "Есть небольшие отклонения ⚖️";
-        else if (score >= 20) textVerdict = "Стоит обратить внимание на здоровье 🏃‍♂️";
-        else textVerdict = "Критическое отклонение от нормы ⚠️";
+        if (score >= 80) textVerdict = "Ты в идеальной форме! Зеленая зона 🌟";
+        else if (score >= 60) textVerdict = "Отличный результат, всё супер! Желто-зеленая зона 👍";
+        else if (score >= 40) textVerdict = "Нормально, но можно чуть лучше. Желтая зона ⚖️";
+        else if (score >= 20) textVerdict = "Обрати внимание на баланс. Оранжевая зона 🏃‍♂️";
+        else textVerdict = "Береги себя, нужно поработать над формой! Красная зона ❤️";
 
-        // Поворот стрелки полукруга (-90 градусов это 0, +90 градусов это 100)
         const degrees = -90 + (score * 1.8);
-        const arrow = document.getElementById('arrow');
-        arrow.style.transform = `translateX(-50%) rotate(${degrees}deg)`;
+        document.getElementById('arrow').style.transform = `translateX(-50%) rotate(${degrees}deg)`;
 
-        // Анимация цифр счета
         const scoreDisplay = document.getElementById('scoreDisplay');
         const verdictDisplay = document.getElementById('verdictDisplay');
         
         scoreDisplay.classList.remove('pop-animation');
-        void scoreDisplay.offsetWidth; // Сброс анимации для повторного запуска
+        void scoreDisplay.offsetWidth; 
         scoreDisplay.classList.add('pop-animation');
 
-        // Счетчик цифр от 0 до результата
         let currentCount = 0;
-        const duration = 1500; // Должно совпадать со временем анимации стрелки в CSS
-        const steps = 50;
-        const stepTime = duration / steps;
-        const increment = score / steps;
-
-        const timer = setInterval(() => {
-            currentCount += increment;
-            if (currentCount >= score) {
-                clearInterval(timer);
-                scoreDisplay.textContent = score;
-            } else {
-                scoreDisplay.textContent = Math.round(currentCount);
-            }
-        }, stepTime);
-
-        verdictDisplay.textContent = textVerdict;
-    }
-</script>
-
-</body>
-</html>
+        
